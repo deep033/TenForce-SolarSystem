@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Test_Taste_Console_Application.Constants;
@@ -12,12 +13,20 @@ namespace Test_Taste_Console_Application.Domain.Services
     {
         public HttpClient Client { get; }
 
-        public HttpClientService(HttpClient client)
+        public HttpClientService(HttpClient client, IConfiguration configuration)
         {
             //The HTTP client is configured in the constructor.
             Client = client;
             Client.BaseAddress = new Uri(UriPath.BaseUri);
-            Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "bcffe801-019e-41fe-a9f6-46ceeeec5b0a");
+
+            var apiKey = configuration["SolarSystemApi:ApiKey"];
+
+            if (string.IsNullOrWhiteSpace(apiKey))
+            {
+                throw new Exception("API key is missing.");
+            }
+
+            Client.DefaultRequestHeaders.Authorization =new AuthenticationHeaderValue("Bearer", apiKey);
             Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(HttpClientSettings.JsonType));
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Test_Taste_Console_Application.Constants;
 using Test_Taste_Console_Application.Domain.DataTransferObjects;
@@ -21,11 +22,9 @@ namespace Test_Taste_Console_Application.Domain.Services
             _httpClientService = httpClientService;
         }
 
-        public IEnumerable<Moon> GetAllMoons()
+        public async Task<IEnumerable<Moon>> GetAllMoons()
         {
-            var response = _httpClientService.Client
-                .GetAsync(UriPath.GetAllMoonsWithMassQueryParameters)
-                .Result;
+            var response = await _httpClientService.Client.GetAsync(UriPath.GetAllMoonsWithMassQueryParameters);
 
             //If the status code isn't 200-299, then the function returns an empty collection.
             if (!response.IsSuccessStatusCode)
@@ -34,7 +33,7 @@ namespace Test_Taste_Console_Application.Domain.Services
                 return new Collection<Moon>();
             }
 
-            var content = response.Content.ReadAsStringAsync().Result;
+            var content = await response.Content.ReadAsStringAsync();
 
             //The JSON converter uses DTO's, that can be found in the DataTransferObjects folder, to deserialize the response content.
             var allMoons = new Collection<Moon>();

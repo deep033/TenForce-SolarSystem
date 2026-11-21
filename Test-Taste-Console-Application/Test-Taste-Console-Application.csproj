@@ -7,11 +7,23 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="appsettings.json" />
+      <None Remove="appsettings.local.json" />
       <None Remove="FileOutput\" />
       <None Remove="Domain\Objects\" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+      <Content Include="appsettings.local.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
     <ItemGroup>
       <PackageReference Include="log4net" Version="2.0.12" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.10" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
       <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

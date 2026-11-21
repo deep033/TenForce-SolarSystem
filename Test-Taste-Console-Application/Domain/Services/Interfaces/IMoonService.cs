@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Test_Taste_Console_Application.Domain.DataTransferObjects;
 using Test_Taste_Console_Application.Domain.Objects;
-
+using System.Threading.Tasks;
 namespace Test_Taste_Console_Application.Domain.Services.Interfaces
 {
     ///<summary>
@@ -9,6 +9,6 @@ namespace Test_Taste_Console_Application.Domain.Services.Interfaces
     ///</summary>
     public interface IMoonService
     {
-        IEnumerable<Moon> GetAllMoons();
+        Task<IEnumerable<Moon>> GetAllMoons();
     }
 }

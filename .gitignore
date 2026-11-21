@@ -488,3 +488,4 @@ $RECYCLE.BIN/
 
 # Restrict local config file
 appsettings.local.json
+/Test-Taste-Console-Application/appsettings.local.json
