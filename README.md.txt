@@ -1,1 +1,0 @@
-.NET application for solar system data.
