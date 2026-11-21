@@ -15,8 +15,11 @@ var apiKey = configuration["SolarSystemApi:ApiKey"];
 
 var services = new ServiceCollection();
 
-services.AddHttpClient<IHttpClientService, HttpClientService>((client, sp) => new HttpClientService(client, baseUrl, apiKey));
+services.AddHttpClient<IHttpClientService, HttpClientService>((client, serviceprovider) => new HttpClientService(client, baseUrl, apiKey));
 services.AddTransient<IMoonService, MoonService>();
+services.AddTransient<IPlanetService, PlanetService>();
+services.AddTransient<IConsoleOutputService, ConsoleOutputService>();
+
 using var provider = services.BuildServiceProvider();
 
 try
@@ -25,12 +28,19 @@ try
 
     var httpService = provider.GetRequiredService<IHttpClientService>();
     var moonService = provider.GetRequiredService<IMoonService>();
+    var planetService = provider.GetRequiredService<IPlanetService>();
+    var consoleService = provider.GetRequiredService<IConsoleOutputService>();
 
     var bodies = await httpService.GetBodiesAsync();
     var moons = moonService.GetMoons(bodies);
+    var planets = planetService.GetPlanets(bodies, moons);
 
-    Console.WriteLine($"Total bodies: {bodies.Count}");
-    Console.WriteLine($"Total moons: {moons.Count}");
+    Console.WriteLine("Writing data...");
+
+    consoleService.PrintAvgMoonGravity(planets);
+    consoleService.PrintMoonMass(moons);
+    consoleService.PrintPlanetsAndMoons(planets);
+    consoleService.PrintAvgMoonTemp(planets);
 }
 catch (Exception ex)
 {
